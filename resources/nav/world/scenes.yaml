@@ -1,0 +1,177 @@
+# 第三层·世界模型·场景表(骨架)
+#
+# 说明
+#   - 这是 0→1 重构的新数据,旧的 resources/nav/{maps,flags,fallback_graph}.yaml 与 src/core/nav 已删除。
+#   - panel_hint: 旧 maps.yaml 里 7 座主城的"小地图大小"旧值(像素,未知是物理像素还是逻辑像素),
+#                 只作自动标定的初值,不要当真值;真值以标定结果(map_panels.yaml)为准。
+#   - 键 = 游戏左上角显示的场景名(OCR 校验用)。alias = OCR 可能读成的别名。
+#   - size   : 场景最大坐标 [宽,高](游戏内坐标,不是像素)。null = 待填。
+#   - tab    : 是否可以 Tab 打开小地图并点击寻路。true/false/null(待现场确认)。室内通常 false。
+#   - kind   : city 主城 | field 野外 | sect 门派 | sect_hall 门派室内/大殿 | maze 迷宫/多层
+#              interior 城内室内 | guild 帮派 | instance 副本/活动(默认不入规划)
+#   - conf   : 来源可信度  A=官方页明确  B=多份攻略一致  C=推测/名称待现场确认
+#   - 所有 size 只有 7 座主城有旧参考值(与旗点攻略最大坐标吻合),其余均需用户填写。
+#   - 「待核」= 公开资料没有给出确切名称/是否存在,请进游戏确认后删除或改名。
+#   - 未经真机验证的内容一律不要当作事实。
+
+scenes:
+
+  # ───────────── 七座主城 ─────────────
+  长安城:    {kind: city, size: [544, 276], panel_hint: [545, 274], tab: true, conf: B, note: "旗: 红/蓝 两面; 国境圈/驿站/门派传送人所在"}
+  建邺城:    {kind: city, size: [287, 143], panel_hint: [554, 276], tab: true, conf: B, note: "飞行符目的地"}
+  傲来国:    {kind: city, size: [223, 150], panel_hint: [410, 274], tab: true, conf: B, note: "飞行符目的地; 旗: 黄"}
+  长寿村:    {kind: city, size: [158, 209], panel_hint: [267, 348], tab: true, conf: B, note: "旗: 绿; 仙灵店铺(买旗)/南极仙翁"}
+  朱紫国:    {kind: city, size: [190, 119], panel_hint: [439, 274], tab: true, conf: B, note: "飞行符目的地; 旗: 浅黄"}
+  宝象国:    {kind: city, size: [159, 119], panel_hint: [443, 330], tab: true, conf: B, note: "飞行符目的地"}
+  西梁女国:  {kind: city, size: [163, 123], panel_hint: [371, 280], tab: true, conf: B, note: "飞行符目的地"}
+
+  # ───────────── 南赡部洲·野外 ─────────────
+  江南野外:  {kind: field, size: [null, null], tab: true, conf: B}
+  东海湾:    {kind: field, size: [null, null], tab: true, conf: B}
+  东海沉船:  {kind: field, size: [null, null], tab: null, conf: B, note: "含沉船内部若干层(待核)"}
+  东海岩洞:  {kind: field, size: [null, null], tab: null, conf: B, note: "通 东海渊 / 女魃墓"}
+  大唐国境:  {kind: field, size: [null, null], tab: true, conf: B, note: "酆都驿站/地府/普陀/凌波城/弥勒山 入口"}
+  大唐境外:  {kind: field, size: [null, null], tab: true, conf: B, note: "最大的连接枢纽; 多个门派入口"}
+  长寿郊外:  {kind: field, size: [null, null], tab: true, conf: B, alias: ["西牛贺洲"], note: "推断: 官方表的'西牛贺洲(20,55)/(21,58)'与帖里'长寿郊外(22,57)'几乎同一位置,西牛贺洲应是长寿郊外所在大洲名/别名,不是独立场景; 进游戏看左上角场景名确认"}
+  丝绸之路:  {kind: field, size: [null, null], tab: true, conf: B}
+  碗子山:    {kind: field, size: [null, null], tab: true, conf: B}
+  墨家村:    {kind: field, size: [null, null], tab: true, conf: B, note: "可能更像小城,待核"}
+  小西天:    {kind: field, size: [null, null], tab: true, conf: B}
+  麒麟山:    {kind: field, size: [null, null], tab: true, conf: B}
+  谢阳山:    {kind: field, size: [null, null], tab: true, conf: B}
+  子母河底:  {kind: field, size: [null, null], tab: null, conf: B}
+  北俱芦洲:  {kind: field, size: [null, null], tab: true, conf: B}
+  女娲神迹:  {kind: field, size: [null, null], tab: null, conf: B}
+  凤巢:      {kind: field, size: [null, null], tab: null, conf: B}
+  龙窟:      {kind: field, size: [null, null], tab: null, conf: B, note: "可能有多层(待核)"}
+  花果山:    {kind: field, size: [null, null], tab: true, conf: B, note: "野外花果山; 与门派 花果山(门派) 不同"}
+  蓬莱仙岛:  {kind: field, size: [null, null], tab: null, conf: B}
+
+  # ───────────── 迷宫 / 多层 ─────────────
+  海底迷宫一层: {kind: maze, size: [null, null], tab: null, conf: B, alias: ["海底迷宫"]}
+  海底迷宫二层: {kind: maze, size: [null, null], tab: null, conf: C}
+  海底迷宫三层: {kind: maze, size: [null, null], tab: null, conf: C}
+  海底迷宫四层: {kind: maze, size: [null, null], tab: null, conf: C}
+  大雁塔一层: {kind: maze, size: [null, null], tab: null, conf: B}
+  大雁塔二层: {kind: maze, size: [null, null], tab: null, conf: B}
+  大雁塔三层: {kind: maze, size: [null, null], tab: null, conf: B}
+  大雁塔四层: {kind: maze, size: [null, null], tab: null, conf: B}
+  大雁塔五层: {kind: maze, size: [null, null], tab: null, conf: B}
+  大雁塔六层: {kind: maze, size: [null, null], tab: null, conf: B, note: "待核: 是否还有七层"}
+  地府迷宫一层: {kind: maze, size: [null, null], tab: null, conf: C, note: "待核层数"}
+  地府迷宫二层: {kind: maze, size: [null, null], tab: null, conf: C}
+  地府迷宫三层: {kind: maze, size: [null, null], tab: null, conf: C}
+  地府迷宫四层: {kind: maze, size: [null, null], tab: null, conf: C}
+
+  # ───────────── 门派(官方: 19 个天命门派 + 2 个奇遇门派) ─────────────
+  # 来源 A: xyq.163.com/news/20260119/4999_1282560.html (人6 魔6 仙7)
+  # 天命门派(19)
+  大唐官府:  {kind: sect, size: [null, null], tab: null, conf: A, race: 人}
+  化生寺:    {kind: sect, size: [null, null], tab: null, conf: A, race: 人}
+  女儿村:    {kind: sect, size: [null, null], tab: null, conf: A, race: 人}
+  神木林:    {kind: sect, size: [null, null], tab: null, conf: A, race: 人, alias: ["战神山"], note: "长安战神山传送人进入; 战神山是否为独立场景待核"}
+  方寸山:    {kind: sect, size: [null, null], tab: null, conf: A, race: 人}
+  天宫:      {kind: sect, size: [null, null], tab: null, conf: A, race: 仙}
+  龙宫:      {kind: sect, size: [null, null], tab: null, conf: A, race: 仙}
+  五庄观:    {kind: sect, size: [null, null], tab: null, conf: A, race: 仙}
+  普陀山:    {kind: sect, size: [null, null], tab: null, conf: A, race: 仙}
+  凌波城:    {kind: sect, size: [null, null], tab: null, conf: A, race: 仙}
+  花果山(门派): {kind: sect, size: [null, null], tab: null, conf: A, race: 仙, alias: ["幻境花果山", "花果山"], note: "与野外 花果山 同名,OCR 需靠场景特征区分"}
+  弥勒山:    {kind: sect, size: [null, null], tab: null, conf: A, race: 仙, note: "2026-01 新增; 大唐国境妙乐小和尚传送; 官方称'新烧双场景',可能有 2 个场景(待核)"}
+  阴曹地府:  {kind: sect, size: [null, null], tab: null, conf: A, race: 魔, alias: ["地府"]}
+  魔王寨:    {kind: sect, size: [null, null], tab: null, conf: A, race: 魔}
+  狮驼岭:    {kind: sect, size: [null, null], tab: null, conf: A, race: 魔}
+  盘丝岭:    {kind: sect, size: [null, null], tab: null, conf: A, race: 魔, note: "门派叫盘丝洞; 场景名 盘丝岭(外) + 盘丝洞(内,见室内表)"}
+  无底洞:    {kind: sect, size: [null, null], tab: null, conf: A, race: 魔}
+  女魃墓:    {kind: sect, size: [null, null], tab: null, conf: A, race: 魔, note: "东海岩洞 引路巫灵进入"}
+  天机城:    {kind: sect, size: [null, null], tab: null, conf: A, race: 人, note: "大唐境外 幻影哒哒 进入"}
+  # 奇遇门派(2) —— 官方列表中另列
+  东海渊:    {kind: sect, size: [null, null], tab: null, conf: A, race: 奇遇, note: "东海岩洞内"}
+  九黎城:    {kind: sect, size: [null, null], tab: null, conf: A, race: 奇遇, note: "大唐境外(176,90) 飞廉/幻影传送"}
+  # 注: 官方"人6魔6仙7"=19。race 是本表按常识整理(人: 大唐/化生/女儿/方寸/神木林/天机城;
+  #     魔: 地府/魔王寨/狮驼/盘丝/无底洞/女魃墓; 仙: 天宫/龙宫/五庄观/普陀/凌波城/花果山/弥勒山),
+  #     只作分类参考,不影响寻路。
+
+  # ───────────── 门派室内/大殿(NPC 师傅多在室内,室内无 Tab 小地图) ─────────────
+  # 仓库 npc_locations.yaml 里的 building/坐标可作"室内内坐标"参考(未验证)。
+  大唐官府·室内: {kind: sect_hall, tab: false, conf: C, npc: 程咬金}
+  化生寺·室内:   {kind: sect_hall, tab: false, conf: C, npc: 空度禅师}
+  女儿村·室内:   {kind: sect_hall, tab: false, conf: C, npc: 孙婆婆}
+  神木林·室内:   {kind: sect_hall, tab: false, conf: C, note: "待核是否存在"}
+  方寸山·大殿:   {kind: sect_hall, tab: false, conf: C, npc: 菩提祖师}
+  天宫·凌霄宝殿: {kind: sect_hall, tab: false, conf: C, npc: "杨戬/李靖"}
+  龙宫·水晶宫:   {kind: sect_hall, tab: false, conf: C, npc: 东海龙王}
+  五庄观·大殿:   {kind: sect_hall, tab: false, conf: C, npc: 镇元大仙}
+  普陀山·潮音洞: {kind: sect_hall, tab: false, conf: C, npc: "观音姐姐/青莲仙女"}
+  凌波城·内殿:   {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  花果山(门派)·内: {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  弥勒山·内殿:   {kind: sect_hall, tab: false, conf: C, note: "待核; 第二场景?"}
+  阴曹地府·森罗殿: {kind: sect_hall, tab: false, conf: C, npc: 地藏王, note: "仓库记'森罗殿里间' 可能为再下一层"}
+  魔王寨·大殿:   {kind: sect_hall, tab: false, conf: C, npc: 牛魔王}
+  狮驼岭·大大王洞: {kind: sect_hall, tab: false, conf: C, npc: 大大王}
+  狮驼岭·二大王洞: {kind: sect_hall, tab: false, conf: C, npc: 二大王, note: "待核是否独立场景"}
+  狮驼岭·三大王洞: {kind: sect_hall, tab: false, conf: C, npc: 三大王, note: "待核是否独立场景"}
+  盘丝洞:        {kind: sect_hall, tab: false, conf: C, npc: "春三十娘/白晶晶"}
+  无底洞·内洞:   {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  女魃墓·内:     {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  天机城·内:     {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  东海渊·内:     {kind: sect_hall, tab: false, conf: C, note: "待核"}
+  九黎城·内:     {kind: sect_hall, tab: false, conf: C, note: "待核"}
+
+  # 阴曹地府周边
+  轮回司:    {kind: sect_hall, tab: false, conf: B, note: "白无常(106,56)→长安(387,227) 官方2013"}
+  无名鬼城:  {kind: field, size: [null, null], tab: null, conf: C, note: "待核"}
+
+  # ───────────── 城内室内(名称均待现场核对,不存在就删) ─────────────
+  # 长安城
+  长安酒店:      {kind: interior, tab: false, conf: C}
+  长安药店:      {kind: interior, tab: false, conf: C}
+  长安杂货店:    {kind: interior, tab: false, conf: C}
+  长安兵器铺:    {kind: interior, tab: false, conf: C}
+  长安服装店:    {kind: interior, tab: false, conf: C}
+  长安饰品店:    {kind: interior, tab: false, conf: C}
+  长安当铺:      {kind: interior, tab: false, conf: C}
+  长安钱庄:      {kind: interior, tab: false, conf: C}
+  长安国子监书院: {kind: interior, tab: false, conf: C}
+  长安皇宫:      {kind: interior, tab: false, conf: C}
+  金銮殿:        {kind: interior, tab: false, conf: C}
+  大唐国库:      {kind: interior, tab: false, conf: C}
+  大唐户部:      {kind: interior, tab: false, conf: C}
+  御膳房:        {kind: interior, tab: false, conf: C}
+  秦府:          {kind: interior, tab: false, conf: B, npc: 秦琼, note: "仓库 npc_locations 已有: 大殿 (87,76) 未验证"}
+  魏征府:        {kind: interior, tab: false, conf: C}
+  程咬金府:      {kind: interior, tab: false, conf: C, note: "与 大唐官府·室内 的关系待核"}
+  # 建邺城
+  建邺衙门:      {kind: interior, tab: false, conf: C}
+  建邺酒店:      {kind: interior, tab: false, conf: C}
+  建邺药店:      {kind: interior, tab: false, conf: C}
+  建邺杂货店:    {kind: interior, tab: false, conf: C}
+  # 傲来国
+  傲来王宫:      {kind: interior, tab: false, conf: C}
+  傲来客栈:      {kind: interior, tab: false, conf: C}
+  傲来药店:      {kind: interior, tab: false, conf: C}
+  傲来杂货店:    {kind: interior, tab: false, conf: C}
+  # 长寿村
+  仙灵店铺:      {kind: interior, tab: false, conf: B, npc: 南极仙翁, note: "买旗(需 仙灵店铺 2 级技能)"}
+  长寿村药店:    {kind: interior, tab: false, conf: C}
+  # 朱紫国
+  朱紫皇宫:      {kind: interior, tab: false, conf: B, note: "阿米国师(55,34); 朱紫旗每周任务点"}
+  朱紫药店:      {kind: interior, tab: false, conf: C}
+  # 宝象国 / 西梁女国
+  宝象皇宫:      {kind: interior, tab: false, conf: C}
+  西梁王宫:      {kind: interior, tab: false, conf: C}
+
+  # ───────────── 帮派 / 活动 / 副本(默认不入规划, enabled:false) ─────────────
+  帮派领地:      {kind: guild, tab: null, conf: C, enabled: false, note: "长安 帮派主管(384,270)/帮派接引人(513,225) 官方2013"}
+  乌鸡国:        {kind: instance, enabled: false, conf: C}
+  通天河:        {kind: instance, enabled: false, conf: C}
+  车迟国:        {kind: instance, enabled: false, conf: C}
+  水陆大会场地:  {kind: instance, enabled: false, conf: C}
+  比武场:        {kind: instance, enabled: false, conf: C}
+  武神坛:        {kind: instance, enabled: false, conf: C}
+  剑会天下:      {kind: instance, enabled: false, conf: C}
+
+# 补充约定
+#   - 新发现的场景由 recorder("跟玩录制") 自动追加到 resources/nav/world/discovered.yaml,
+#     人工确认后再合并回本表。
+#   - 同一场景名重复(如 花果山)用括号区分,alias 里写游戏实际显示名。

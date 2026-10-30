@@ -1,0 +1,62 @@
+# 第三层·成本参数（你填 null 的项；defaults 段是我给的冷启动估计，跑过后由实测覆盖）
+# 规划器以"秒"为统一货币：钱按"点卡时间价值"折成秒，再和走路时间一起比较。
+#   用旗的盈亏距离 d* = 走路速度 × (用旗开销秒 + 旗折算秒)，是推论，不是阈值。
+
+time_value:
+  point_card_cny_per_hour: null     # 点卡每小时多少元（按点计费的请换算成每小时）
+
+items:
+  liang_per_cny: null               # 1 元人民币能换多少两游戏币（没有就留空：游戏币消耗按 0 折算）
+  flag_price: null                  # 一面合成旗的购入价
+  flag_price_unit: 两               # 两 | 元
+  flag_uses_per_item: 140           # 合成旗总次数（公开资料，待核）
+  charm_price: 500                  # 飞行符单价（两，罗道人；公开资料，待核）
+
+walk:
+  speed_units_per_s: null           # 实测平均走路速度（坐标/秒）；录制后自动算出再填
+  per_scene_override: {}            # 例 {大唐境外: 9.5}
+
+overhead_s:                         # 实测的各动作固定开销（秒），录制后填；null 时用 defaults
+  flag_use: null
+  charm_use: null
+  portal: null
+  enter: null
+  npc: null
+  post: null
+  earth: null
+  stair: null
+  exit: null
+
+planning:
+  flag_min_remaining: 1             # 剩余 <1 次规划不再用旗
+  flag_warn_remaining: 21           # <21 提示补充
+  charm_enabled: true
+
+supply:                             # 补给（买旗），N6 用
+  where: 长安城
+  stall_area: null                  # 摆摊区域/坐标
+  how_to_find_seller: null          # 怎么识别在卖旗的摊位
+  buy_count: null                   # 一次买几面
+  max_price: null                   # 价格上限（两）
+  on_no_seller: logout              # 没人卖：直接下线（用户已确认）
+  logout_means: null                # "下线"= 退到登录页 / 关闭游戏？
+
+# ── 冷启动估计（我估的，不是实测；实测后以上面为准）──
+defaults:
+  speed_units_per_s: 10             # 估计值
+  unknown_leg_s: 20                 # 坐标未知时，一段场景内走路按这么多秒估
+  overhead_s:
+    flag_use: 8                     # 开背包+找旗+右键+点点位+加载（远程往返 0.4~1.2s/步）
+    charm_use: 7
+    portal: 3
+    enter: 2
+    npc: 6
+    post: 6
+    earth: 6
+    stair: 3
+    exit: 5
+    default: 5
+  conf_penalty_s:                   # 可信度低的连接加罚时，让规划优先走有依据的路
+    A: 0
+    B: 2
+    C: 10

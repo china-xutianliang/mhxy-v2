@@ -1,0 +1,104 @@
+# 第三层·导标旗(骨架)
+# 用户已确认: 长安城 红/蓝 两面, 朱紫国 浅黄, 傲来国 黄, 长寿村 绿; 每面 7 个点位, 共 5 面 35 点。
+# 点位是你**自己账号实际插下的坐标**(合成旗里每个点位=你插旗时的位置), 不同账号可能略有偏差,
+# 所以本文件按账号/区覆盖: 默认值在这里, 账号差异写进 flags.<账号>.yaml (同结构, 只写不同的点)。
+#
+# xy        : 该点位在对应城市内的游戏坐标 [x,y]; 你填。
+# ui        : 使用旗子后弹出的选点界面里, 该点位的红点在**游戏画面**的像素位置 [x,y] (800×600 逻辑坐标); 你填或由录制得到。
+# near      : 附近的传送圈/NPC/建筑(便于人读), 可选。
+# 剩余次数不写在这里, 运行时从游戏里读(悬停/物品栏数字)。
+
+flags:
+
+  长安红:
+    color: 红
+    city: 长安城
+    item_name: null            # 道具栏里的名称, 如 "红色导标旗"? 待核
+    icon_template: null        # 图标模板路径, 待截图
+    points:
+      - {idx: 1, xy: null, ui: null, near: null}
+      - {idx: 2, xy: null, ui: null, near: null}
+      - {idx: 3, xy: null, ui: null, near: null}
+      - {idx: 4, xy: null, ui: null, near: null}
+      - {idx: 5, xy: null, ui: null, near: null}
+      - {idx: 6, xy: null, ui: null, near: null}
+      - {idx: 7, xy: null, ui: null, near: null}
+
+  长安蓝:
+    color: 蓝
+    city: 长安城
+    item_name: null
+    icon_template: null
+    points:
+      - {idx: 1, xy: null, ui: null, near: null}
+      - {idx: 2, xy: null, ui: null, near: null}
+      - {idx: 3, xy: null, ui: null, near: null}
+      - {idx: 4, xy: null, ui: null, near: null}
+      - {idx: 5, xy: null, ui: null, near: null}
+      - {idx: 6, xy: null, ui: null, near: null}
+      - {idx: 7, xy: null, ui: null, near: null}
+
+  朱紫浅黄:
+    color: 浅黄
+    city: 朱紫国
+    item_name: null
+    icon_template: null
+    points:
+      - {idx: 1, xy: null, ui: null, near: null}
+      - {idx: 2, xy: null, ui: null, near: null}
+      - {idx: 3, xy: null, ui: null, near: null}
+      - {idx: 4, xy: null, ui: null, near: null}
+      - {idx: 5, xy: null, ui: null, near: null}
+      - {idx: 6, xy: null, ui: null, near: null}
+      - {idx: 7, xy: null, ui: null, near: null}
+
+  傲来黄:
+    color: 黄
+    city: 傲来国
+    item_name: null
+    icon_template: null
+    points:
+      - {idx: 1, xy: null, ui: null, near: null}
+      - {idx: 2, xy: null, ui: null, near: null}
+      - {idx: 3, xy: null, ui: null, near: null}
+      - {idx: 4, xy: null, ui: null, near: null}
+      - {idx: 5, xy: null, ui: null, near: null}
+      - {idx: 6, xy: null, ui: null, near: null}
+      - {idx: 7, xy: null, ui: null, near: null}
+
+  长寿绿:
+    color: 绿
+    city: 长寿村
+    item_name: null
+    icon_template: null
+    points:
+      - {idx: 1, xy: null, ui: null, near: null}
+      - {idx: 2, xy: null, ui: null, near: null}
+      - {idx: 3, xy: null, ui: null, near: null}
+      - {idx: 4, xy: null, ui: null, near: null}
+      - {idx: 5, xy: null, ui: null, near: null}
+      - {idx: 6, xy: null, ui: null, near: null}
+      - {idx: 7, xy: null, ui: null, near: null}
+
+# 使用旗子的界面(一次性标定, 你提供截图后填)
+flag_ui:
+  open_by: null                 # 背包右键 / 快捷栏 / 快捷键
+  point_pick: null              # 点红点即飞 / 点后需确认 (待核; 公开资料说"点想去的红点")
+  confirm_button: null          # 若需确认, 按钮模板
+  count_roi: null               # 悬停后显示剩余次数的文字区域 [x,y,w,h]
+  count_text_pattern: null      # 如 "剩余(\d+)次" 待核
+  total_uses_per_flag: 140      # 五色旗盒合成旗 140 次(公开资料, 待核)
+  low_warn: 21                  # <21 提示补充
+  low_stop: 1                   # <1 规划不再用旗
+
+# 飞行符(罗道人 500 两/张): 使用后弹出选城界面"想去哪个主城点一下"
+charm:
+  item_name: null               # 道具名, 待核(飞行符)
+  icon_template: null
+  dests:                        # 用户确认: 不含长安、长寿
+    建邺城:   {ui: null, arrive: null}   # ui=选城界面里该城按钮的像素位置; arrive=飞到后的落脚坐标
+    西梁女国: {ui: null, arrive: null}
+    傲来国:   {ui: null, arrive: null}
+    朱紫国:   {ui: null, arrive: null}
+    宝象国:   {ui: null, arrive: null}
+  vendor: {npc: 罗道人, where: "长安 (505,74)/(265,46)/(326,151) 公开资料, 待核", price: 500}

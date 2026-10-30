@@ -1,0 +1,209 @@
+# resources/task_config/yunbiao/npc_routes.yaml
+
+routes:
+  # 长安城区域运镖路线
+  程咬金:
+    - map: 长安城         # 当前地图
+      portal: 大唐官府    # 目标地图       这样的目的是为了方便直接调用 MapUtils  map_routes  地图路由
+    - map: 大唐官府
+      portal: 府邸   # 室内无法打开小地图,只能通过鼠标点击大概位置（设置坐标以及点击次数）
+      x: 100
+      y: 100
+      numbers: 1        #点击次数
+
+
+  空度禅师:
+    - map: 长安城
+      portal: 化生寺
+    - map: 化生寺
+      portal: 府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+
+  秦琼:
+    - map: 长安城
+      portal: 秦府府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+
+  # 地府运镖路线
+  地藏王:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 地府
+    - map: 地府
+      portal: 府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+
+  # 境外运镖路线
+  春三十娘:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 盘丝岭
+    - map: 盘丝岭
+      portal: 府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+  白晶晶:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 盘丝岭
+    - map: 盘丝岭
+      portal: 府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+
+  镇元大仙:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 五庄观
+    - map: 五庄观
+      portal: 府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+  大大王:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 狮驼岭
+    - map: 狮驼岭
+      portal: 狮驼岭
+    - map: 大大王府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+  二大王:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 狮驼岭
+    - map: 狮驼岭
+      portal: 狮驼岭
+    - map: 二大王府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+  三大王:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 狮驼岭
+    - map: 狮驼岭
+      portal: 狮驼岭
+    - map: 三大王府邸
+      x: 100
+      y: 100
+      numbers: 1
+
+
+  魔王寨:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 长安驿站
+      portal: 大唐国境
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 魔王寨
+    - map: 魔王寨
+
+
+  # 天宫运镖路线
+  天宫:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 长寿郊外
+    - map: 长寿郊外
+      portal: 天宫
+    - map: 天宫
+      portal: 宫殿
+
+
+  # 方寸山运镖路线
+  方寸山:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 长安驿站
+      portal: 大唐国境
+    - map: 大唐国境
+      portal: 大唐境外
+    - map: 大唐境外
+      portal: 长寿郊外
+    - map: 长寿郊外
+      portal: 长寿村
+    - map: 长寿村
+      portal: 方寸山
+    - map: 方寸山
+
+
+  # 龙宫运镖路线
+  龙宫:
+    - map: 长安城
+      portal: 江南野外
+    - map: 江南野外
+      portal: 建业城
+    - map: 建业城
+      portal: 东海湾
+    - map: 东海湾
+      portal: 龙宫
+    - map: 龙宫
+
+
+  # 女儿村运镖路线
+  女儿村:
+    - map: 长安城
+      portal: 江南野外
+    - map: 江南野外
+      portal: 建业城
+    - map: 建业城
+      portal: 东海湾
+    - map: 东海湾
+      portal: 傲来
+    - map: 傲来
+      portal: 女儿村
+    - map: 女儿村
+
+
+  # 普陀山运镖路线
+  普陀山:
+    - map: 长安城
+      portal: 长安驿站
+    - map: 长安驿站
+      portal: 大唐国境
+    - map: 大唐国境
+      portal: 普陀山
+    - map: 普陀山

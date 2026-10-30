@@ -1,0 +1,90 @@
+# 驱动层配置：大漠插件注册信息、字库、AI模型、游戏窗口识别、窗口绑定参数
+# 本文件是公开示例：复制为 driver.yaml 后填入自己的大漠注册码。
+# auth.reg_code / auth.ver_info 是付费授权凭据，真实值只放在本地 driver.yaml（已 gitignore）。
+
+auth:
+  reg_code: ""
+  ver_info: ""
+
+# dll 文件名（相对 resources/dll/ 目录）
+dll:
+  dmreg_file: DmReg.dll
+  dm_file: dm.dll
+
+# 字库配置（相对 resources/dict/ 目录），index 为大漠字库索引
+dicts:
+  - index: 0
+    name: map.txt
+
+# AI模块配置（相对 resources/ai/ 目录）
+ai:
+  module_file: ai.module
+  yolo:
+    version: v5-7.0
+    models:
+      - index: 0
+        file: game_mhxy.onnx
+        password: ""
+
+# 游戏窗口识别（用于 EnumWindowByProcess 查找窗口）
+game_window:
+  process_name: mhmain.exe
+  title: 梦幻西游
+  class_name: WSGAME
+  filter: 2
+  # 期望的客户区分辨率：flags.yaml/fallback_graph.yaml/maps.yaml 里的所有像素坐标
+  # 都是按这个分辨率标定的，绑定后会自动核对，不一致就直接报错，而不是悄悄用错坐标。
+  # 本地多开 / 远程多机，每一个被绑定的窗口都必须是这个分辨率，没有例外。
+  # 已确认：游戏客户区 800(宽)x600(高)。绑定远程查看器窗口时，这里的含义要和
+  # 查看器客户区尺寸拆开，见架构设计方案.md 第10节
+  expected_width: 800
+  expected_height: 600
+
+# 窗口后台绑定参数（dx 模式，支持窗口被遮挡/最小化时仍可操作）
+# 适用对象：目标窗口就是游戏进程本身（本机多开、阶段0 验证）。
+# 注意：这组参数绑的是 mhmain.exe / WSGAME。远程查看器窗口不是游戏进程，
+#       用这组参数去绑查看器是错的，见下面的 bind_viewer。
+bind:
+  display: dx2
+  mouse: dx.mouse.state.api|dx.mouse.api|dx.mouse.cursor
+  keypad: dx.keypad.state.api|dx.keypad.api
+  public: dx.public.active.api|dx.public.active.message|dx.public.hide.dll|dx.public.graphic.protect|dx.public.anti.api|dx.public.km.protect|dx.public.down.cpu
+  mode: 101
+
+# ---------------------------------------------------------------------------
+# 绑定远程查看器窗口（阶段0.5 用；主控机绑 tvnviewer，不绑游戏进程）
+#
+# 为什么不能照抄上面的 dx2：
+#   远程查看器是普通 GDI 窗口（TightVNC 用 GDI 渲染，PrintWindow 就能抓到画面），
+#   里面没有 DX 表面。dx2 抓图和 dx.mouse.* 注入对它都没有天然效果，注入反而
+#   可能把查看器搞崩（架构设计方案.md 10.6 已标注这个风险）。而查看器本身是标准
+#   Win32 程序，会正常处理 WM_MOUSEMOVE/WM_LBUTTONDOWN，所以纯消息模式就够了，
+#   全程不往查看器进程注入任何东西——这是比 dx2 更安全也更简单的一档。
+#
+# 逐级实测顺序（每级只改一个变量，失败才上一级）：
+#   1  gdi   + windows  + windows + ""                   + 0    首选，零注入
+#   2  gdi2  + windows  + windows + ""                   + 0    能点但抓图黑/不刷新
+#   3  gdi   + windows3 + windows + ""                   + 0    点击落到错误的子窗口
+#   4  gdi   + windows  + windows + dx.public.active.api + 0    画面正常但点击完全无反应
+#   5  normal+ windows  + windows + ""                   + 0    查看器能一直保持可见时兜底
+#   6  dx2   + windows2 + windows + ""                   + 0    前五档全废才赌注入
+#   7  dx2   + dx.mouse.* + dx.keypad.* + 保护全套        + 101  最后手段，接受查看器崩溃
+#
+# 两个易踩的坑（都来自大漠接口说明，不是猜的）：
+#   - windows2 不是鼠标模式，它是 dx 缩写，等价于
+#     dx.mouse.position.lock.api|dx.mouse.position.lock.message|dx.mouse.state.message
+#     需要注入查看器进程，所以它不属于"温和档"，不要当成 windows 的升级版。
+#   - keypad 的合法值只有 normal / windows / dx.*，"windows2" 在 keypad 上是无效值。
+#
+# 实测结论（2026-10-27，TightVNC，详见架构设计方案.md 10.11）：
+#   通过的是 gdi + windows3 + windows，且必须绑查看器内部的画面子窗口
+#   （FindWindowEx(顶层, 0, "tvnviewer-session-window")），绑顶层窗口没有通过验证。
+#   查看器被遮挡、不在前台时抓图和输入仍然有效。
+#   画面变化有 0.4~1.2 s 往返延迟，输入后必须轮询确认，不能固定等待后取一帧。
+bind_viewer:
+  display: gdi
+  mouse: windows3
+  keypad: windows
+  public: ""
+  mode: 0
+  child_class: tvnviewer-session-window

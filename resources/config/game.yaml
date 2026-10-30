@@ -1,0 +1,6 @@
+# 游戏UI关键区域配置（像素坐标，相对客户区）
+# 以下区域取自实测经验值，具体以当前分辨率/界面布局为准，不对的话重新标定即可
+
+ocr_regions:
+  current_scene_name: {x1: 21, y1: 13, x2: 96, y2: 30, color: "ffffff-202020"}
+  current_coords:      {x1: 21, y1: 64, x2: 110, y2: 80, color: "ffffff-202020"}

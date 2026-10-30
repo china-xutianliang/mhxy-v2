@@ -1,0 +1,224 @@
+# 第三层·世界模型·连接表(骨架)
+#
+# 一条 link 描述两个场景之间一种"过场景"的方式。
+#   a, b     场景名(必须存在于 scenes.yaml)
+#   type     portal  走进地面传送圈/出入口(自动过图,识别"圈圈"点击/走入)
+#            enter   进/出室内建筑(点门,室内无 Tab 小地图)
+#            npc     对 NPC 对话选项传送(要写 via 与对话选项文字 opt)
+#            post    驿站老板(多目的地菜单,见 posts 段)
+#            earth   土地公公
+#            stair   迷宫上下层
+#            exit    出口形式未知(只知道必有出口和大致去向, 待录制确认)
+#   bidir    true: 反向同样可走。a_at=在 a 里触发/落脚的位置, b_at=在 b 里触发/落脚的位置
+#            false: 只能 a→b; a_at=在 a 里触发位置, b_at=到达 b 后的落脚位置
+#   a_at/b_at [x,y] 游戏坐标, null = 待你填
+#   ref      公开资料中的原始说法(**未经真机验证**, 仅供你填坐标时参考)
+#   conf     A 官方明确 / B 多份攻略一致 / C 推测或资料互相冲突
+#   conflict 有冲突时写明, 以真机实测为准
+#   opt      NPC 对话选项文字(待你补, 用于 OCR 点击)
+#
+# 约定: 先把 a_at/b_at 填完, 再由 recorder 实测校正; 走路成本由规划器按坐标距离估算。
+
+links:
+
+  # ═════════════ 长安城 ═════════════
+  - {a: 长安城, b: 江南野外, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 长安城, b: 大唐官府, type: portal, bidir: true, a_at: null, b_at: null, ref: "官府入口 长安(320,275)", conf: B}
+  - {a: 长安城, b: 化生寺,   type: portal, bidir: true, a_at: null, b_at: null, ref: "大雁塔后 长安(505,271)", conf: B}
+  - {a: 长安城, b: 大雁塔一层, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 长安城, b: 大唐国境, type: portal, bidir: true, a_at: null, b_at: null, ref: "长安(10,3) / (8,4) 传送圈", conf: C, conflict: "(10,3) 与 (8,4) 两个说法; 国境到达点另有 (87,250)/(4,75)"}
+  - {a: 长安城, b: 神木林, type: npc, bidir: false, a_at: null, b_at: null, via: 战神山传送人, opt: null, ref: "长安(352,73) → 战神山(15,38)", conf: B}
+  - {a: 长安城, b: 帮派领地, type: npc, bidir: false, a_at: null, b_at: null, via: 帮派主管/帮派接引人, opt: null, ref: "长安(384,270)帮派主管; (513,225)帮派接引人", conf: B}
+
+  # ═════════════ 建邺城 / 东海 ═════════════
+  - {a: 建邺城, b: 江南野外, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 建邺城, b: 东海湾,   type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 东海湾, b: 傲来国,   type: portal, bidir: true, a_at: null, b_at: null, conf: B, note: "也可能是船/驿站, 待核"}
+  - {a: 东海湾, b: 东海沉船, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 东海湾, b: 东海岩洞, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 东海湾, b: 龙宫, type: npc, bidir: false, a_at: null, b_at: null, via: 老虾, opt: null, ref: "东海湾(113,88) → 龙宫(12,7)", conf: B}
+  - {a: 龙宫, b: 东海湾, type: npc, bidir: false, a_at: null, b_at: null, via: 虾兵, opt: null, ref: "龙宫(36,37) → 东海湾(103,92)", conf: B}
+  - {a: 东海湾, b: 东海岩洞, type: npc, bidir: false, a_at: null, b_at: null, via: 林老汉, opt: null, ref: "东海湾(85,33) 林老汉 → 东海岩洞", conf: B, note: "与上一条 portal 同终点, 保留两种走法"}
+  - {a: 东海岩洞, b: 女魃墓, type: npc, bidir: false, a_at: null, b_at: null, via: 引路巫灵, opt: null, ref: "东海岩洞(109,72)", conf: B}
+  - {a: 东海岩洞, b: 东海渊, type: portal, bidir: true, a_at: null, b_at: null, conf: C, note: "东海渊入口形式待核(传送圈或NPC)"}
+
+  # ═════════════ 傲来国 / 花果山 / 北俱 ═════════════
+  - {a: 傲来国, b: 女儿村, type: portal, bidir: true, a_at: null, b_at: null, ref: "傲来(9,139), 也是旗点", conf: B}
+  - {a: 傲来国, b: 花果山, type: npc, bidir: false, a_at: null, b_at: null, via: 待核, opt: null, ref: "傲来(213,140) → 花果山(145,15)", conf: C}
+  - {a: 傲来国, b: 花果山, type: portal, bidir: true, a_at: null, b_at: null, conf: C, note: "常规出口(旧资料只说 傲来↔花果山 相邻)"}
+  - {a: 傲来国, b: 蓬莱仙岛, type: npc, bidir: true, a_at: null, b_at: null, via: 待核, opt: null, conf: C}
+  - {a: 花果山, b: 花果山(门派), type: npc, bidir: false, a_at: null, b_at: null, via: 待核, opt: null, conf: C, note: "幻境花果山入口NPC/形式待核"}
+  - {a: 花果山, b: 北俱芦洲, type: earth, bidir: false, a_at: null, b_at: null, via: 土地, ref: "花果山(28,98) → 北俱(195,105)", conf: B}
+  - {a: 北俱芦洲, b: 花果山, type: portal, bidir: false, a_at: null, b_at: null, conf: C, note: "反向入口待核"}
+  - {a: 花果山, b: 海底迷宫一层, type: npc, bidir: false, a_at: null, b_at: null, via: 马猴, ref: "花果山(100,5) → 海底迷宫一层(30,26)", conf: B}
+  - {a: 海底迷宫一层, b: 海底迷宫二层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 海底迷宫二层, b: 海底迷宫三层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 海底迷宫三层, b: 海底迷宫四层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 北俱芦洲, b: 长寿郊外, type: npc, bidir: true, a_at: null, b_at: null, via: 待核, ref: "长寿郊外(60,67) ↔ 北俱(195,5)", conf: B}
+  - {a: 北俱芦洲, b: 女娲神迹, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 北俱芦洲, b: 凤巢,     type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 北俱芦洲, b: 龙窟,     type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 北俱芦洲, b: 长安城,   type: npc, bidir: false, a_at: null, b_at: null, via: 待核, ref: "官方2013: 北俱(60,67) → 长安(363,82)", conf: C, conflict: "疑似笔误(与 傲来(57,96)→长安(363,82) 到达点相同); 不要当作真实边, 实测后再启用", enabled: false}
+  - {a: 傲来国, b: 长安城,     type: npc, bidir: false, a_at: null, b_at: null, via: 待核, ref: "官方2013: 傲来(57,96) → 长安(363,82)", conf: C, enabled: false}
+
+  # ═════════════ 长寿村 / 长寿郊外 / 天宫 ═════════════
+  - {a: 长寿村, b: 长寿郊外, type: portal, bidir: true, a_at: null, b_at: null, ref: "长寿村(145,4)", conf: B}
+  - {a: 长寿村, b: 方寸山,   type: portal, bidir: true, a_at: null, b_at: null, ref: "长寿村(109,204)", conf: B}
+  - {a: 长寿郊外, b: 丝绸之路, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 长寿郊外, b: 大唐境外, type: earth, bidir: false, a_at: null, b_at: null, via: 土地, ref: "长寿郊外(47,119) → 境外(60,15)", conf: B}
+  - {a: 大唐境外, b: 长寿郊外, type: earth, bidir: false, a_at: null, b_at: null, via: 土地, ref: "境外(52,15) → 长寿郊外(90,15)", conf: B}
+  # 天宫入口: 官方'西牛贺洲(21,58)'与帖里'长寿郊外(22,57)'几乎同点,判断西牛贺洲=长寿郊外(别名),两个说法合并
+  - {a: 长寿郊外, b: 天宫, type: npc, bidir: false, a_at: null, b_at: null, via: 守门天将, opt: null, ref: "长寿郊外(21,58)/(22,57) → 天宫(236,16)", conf: B}
+  - {a: 天宫, b: 长寿郊外, type: npc, bidir: false, a_at: null, b_at: null, via: 守门天将, opt: null, ref: "天宫(230,13) → 长寿郊外(20,55)", conf: B}
+  - {a: 天宫, b: 天宫·凌霄宝殿, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+
+  # ═════════════ 大唐国境 / 大唐境外 ═════════════
+  - {a: 大唐国境, b: 大唐境外, type: portal, bidir: true, a_at: null, b_at: null, ref: "国境(4,75)→境外", conf: B}
+  - {a: 大唐国境, b: 阴曹地府, type: portal, bidir: true, a_at: null, b_at: null, ref: "国境(50,325)", conf: B}
+  - {a: 大唐国境, b: 普陀山, type: npc, bidir: false, a_at: null, b_at: null, via: 普陀接引仙女, ref: "国境(220,62) → 普陀山(87,4)", conf: B}
+  - {a: 普陀山, b: 大唐国境, type: npc, bidir: false, a_at: null, b_at: null, via: 待核, ref: "普陀山(80,9) → 国境(275,110)", conf: B}
+  - {a: 大唐国境, b: 凌波城, type: earth, bidir: false, a_at: null, b_at: null, via: 土地, ref: "国境(174,261)", conf: B}
+  - {a: 大唐国境, b: 弥勒山, type: npc, bidir: false, a_at: null, b_at: null, via: 妙乐小和尚, opt: null, ref: "2026-01 新增, 位置待核", conf: C}
+  - {a: 大唐境外, b: 五庄观, type: portal, bidir: true, a_at: null, b_at: null, ref: "境外(634,77)", conf: B}
+  - {a: 大唐境外, b: 盘丝岭, type: portal, bidir: true, a_at: null, b_at: null, ref: "境外(530,111) → 盘丝岭(185,138)", conf: B}
+  - {a: 大唐境外, b: 狮驼岭, type: portal, bidir: true, a_at: null, b_at: null, ref: "境外(8,49)", conf: B}
+  - {a: 大唐境外, b: 魔王寨, type: portal, bidir: true, a_at: null, b_at: null, ref: "境外(55,114)", conf: B}
+  - {a: 大唐境外, b: 天机城, type: npc, bidir: false, a_at: null, b_at: null, via: 幻影哒哒, opt: null, ref: "境外(190,10)", conf: B}
+  - {a: 大唐境外, b: 九黎城, type: npc, bidir: false, a_at: null, b_at: null, via: "飞廉/幻影", opt: null, ref: "境外(176,90)", conf: A}
+  - {a: 大唐境外, b: 墨家村, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大唐境外, b: 碗子山, type: portal, bidir: true, a_at: null, b_at: null, ref: "经境外(12,28)驿站", conf: B}
+  - {a: 大唐境外, b: 小西天, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大唐境外, b: 朱紫国, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 碗子山, b: 无底洞, type: earth, bidir: false, a_at: null, b_at: null, via: 土地, conf: B}
+  - {a: 碗子山, b: 宝象国, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+
+  # ═════════════ 朱紫国 / 西梁女国 / 宝象国 / 西行线 ═════════════
+  - {a: 朱紫国, b: 麒麟山,   type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 朱紫国, b: 西梁女国, type: npc, bidir: true, a_at: null, b_at: null, via: 待核, ref: "朱紫(56,43) ↔ 西梁女国(15,11)/(24,53)", conf: B}
+  - {a: 朱紫国, b: 大唐境外, type: portal, bidir: false, a_at: null, b_at: null, ref: "朱紫(2,2) 去天机城 / 朱紫(4,4) 去魔王寨", conf: C, conflict: "(2,2) 与 (4,4) 两个说法, 可能是同一圈的不同写法"}
+  - {a: 朱紫国, b: 朱紫皇宫, type: enter, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 西梁女国, b: 丝绸之路, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 西梁女国, b: 子母河底, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 宝象国, b: 谢阳山,   type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 宝象国, b: 丝绸之路, type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 宝象国, b: 麒麟山,   type: portal, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 宝象国, b: 无底洞,   type: portal, bidir: false, a_at: null, b_at: null, ref: "宝象国(148,10) → 碗子山 → 无底洞", conf: C, note: "实际经 碗子山土地; 可能与 碗子山→无底洞 重复, 待核"}
+
+  # ═════════════ 驿站(见 posts 段的多目的地菜单) / 门派传送人(回长安) ═════════════
+  # 门派传送人: 各门派内的 NPC, 回长安(475,28)。官方2013 注明"30级以下限制", 含义待核, 默认 enabled:false。
+  - {a: 大唐官府, b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "官方2013: 官府(73,43) → 长安(475,28)", conf: B, enabled: false}
+  - {a: 化生寺,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(63,28)", conf: B, enabled: false}
+  - {a: 方寸山,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(120,136)", conf: B, enabled: false}
+  - {a: 女儿村,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(21,125)", conf: B, enabled: false}
+  - {a: 龙宫,     b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(113,55)", conf: B, enabled: false}
+  - {a: 天宫,     b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(162,66)", conf: B, enabled: false}
+  - {a: 普陀山,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(18,51)", conf: B, enabled: false}
+  - {a: 五庄观,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(57,31)", conf: B, enabled: false}
+  - {a: 盘丝岭,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(180,132)", conf: B, enabled: false}
+  - {a: 狮驼岭,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(112,27)", conf: B, enabled: false}
+  - {a: 魔王寨,   b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(87,72)", conf: B, enabled: false}
+  - {a: 阴曹地府, b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 门派传送人, ref: "(27,66)", conf: B, enabled: false}
+  - {a: 阴曹地府, b: 长安城, type: npc, bidir: false, a_at: null, b_at: null, via: 白无常(轮回司), ref: "轮回司(106,56) → 长安(387,227)", conf: B, enabled: false}
+  # 其余门派(神木林/凌波城/无底洞/女魃墓/天机城/花果山/弥勒山/东海渊/九黎城)是否有回长安传送人: 待核, 请进游戏看。
+  # 弥勒山有技能"吃茶去了"(平常状态可瞬间回门派), 属于技能不是连接, 见下 skills 段。
+
+  # ═════════════ 返回出口(资料只给了单向入口; 游戏里这些地方必有出口, 形式和目的地待核) ═════════════
+  # type=exit 表示"出口形式未知(传送圈/NPC/门派传送人)"。目的地是按剧情和地理的推测(conf C),
+  # 录制后改成真实类型和坐标。
+  - {a: 神木林,       b: 长安城,   type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 凌波城,       b: 大唐国境, type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 弥勒山,       b: 大唐国境, type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 九黎城,       b: 大唐境外, type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 天机城,       b: 大唐境外, type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 无底洞,       b: 碗子山,   type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 女魃墓,       b: 东海岩洞, type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 花果山(门派), b: 花果山,   type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+  - {a: 海底迷宫一层, b: 花果山,   type: exit, bidir: false, a_at: null, b_at: null, conf: C}
+
+  # ═════════════ 各门派 外 ↔ 室内 ═════════════
+  - {a: 大唐官府, b: 大唐官府·室内, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 化生寺,   b: 化生寺·室内,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 女儿村,   b: 女儿村·室内,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 神木林,   b: 神木林·室内,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 方寸山,   b: 方寸山·大殿,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 龙宫,     b: 龙宫·水晶宫,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 五庄观,   b: 五庄观·大殿,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 普陀山,   b: 普陀山·潮音洞, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 凌波城,   b: 凌波城·内殿,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 花果山(门派), b: 花果山(门派)·内, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 弥勒山,   b: 弥勒山·内殿,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 阴曹地府, b: 阴曹地府·森罗殿, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 阴曹地府, b: 轮回司,         type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 阴曹地府, b: 无名鬼城,       type: portal, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 阴曹地府, b: 地府迷宫一层,   type: portal, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 地府迷宫一层, b: 地府迷宫二层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 地府迷宫二层, b: 地府迷宫三层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 地府迷宫三层, b: 地府迷宫四层, type: stair, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 魔王寨,   b: 魔王寨·大殿,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 狮驼岭,   b: 狮驼岭·大大王洞, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 狮驼岭,   b: 狮驼岭·二大王洞, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 狮驼岭,   b: 狮驼岭·三大王洞, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 盘丝岭,   b: 盘丝洞,         type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 无底洞,   b: 无底洞·内洞,   type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 女魃墓,   b: 女魃墓·内,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 天机城,   b: 天机城·内,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 东海渊,   b: 东海渊·内,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 九黎城,   b: 九黎城·内,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+
+  # ═════════════ 大雁塔 ═════════════
+  - {a: 大雁塔一层, b: 大雁塔二层, type: stair, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大雁塔二层, b: 大雁塔三层, type: stair, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大雁塔三层, b: 大雁塔四层, type: stair, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大雁塔四层, b: 大雁塔五层, type: stair, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 大雁塔五层, b: 大雁塔六层, type: stair, bidir: true, a_at: null, b_at: null, conf: B}
+
+  # ═════════════ 城内室内(进出门; 全部 conf C, 名称待现场核对) ═════════════
+  - {a: 长安城, b: 长安酒店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安药店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安杂货店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安兵器铺,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安服装店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安饰品店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安当铺,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安钱庄,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安国子监书院, type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 长安皇宫,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安皇宫, b: 金銮殿,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安皇宫, b: 御膳房,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 大唐国库,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 大唐户部,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 秦府,           type: enter, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 长安城, b: 魏征府,         type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长安城, b: 程咬金府,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 建邺城, b: 建邺衙门,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 建邺城, b: 建邺酒店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 建邺城, b: 建邺药店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 建邺城, b: 建邺杂货店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 傲来国, b: 傲来王宫,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 傲来国, b: 傲来客栈,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 傲来国, b: 傲来药店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 傲来国, b: 傲来杂货店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 长寿村, b: 仙灵店铺,       type: enter, bidir: true, a_at: null, b_at: null, conf: B}
+  - {a: 长寿村, b: 长寿村药店,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 朱紫国, b: 朱紫药店,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 宝象国, b: 宝象皇宫,       type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+  - {a: 西梁女国, b: 西梁王宫,     type: enter, bidir: true, a_at: null, b_at: null, conf: C}
+
+# ───────────── 驿站(post): 一个驿站老板 = 多目的地菜单 ─────────────
+# dests 里的目的地写 {to, opt(菜单文字,待填), arrive[x,y](到达点,待填)}。
+# 仓库模板 驿站老板1-6 对应 6 个驿站, 但与场景的对应关系未知, 请你对号入座。
+posts:
+  - {scene: 长安城,   at: null, ref: "长安(280,43)/(280,45)", conf: B, dests: [{to: 大唐国境, opt: null, arrive: null, ref: "官方2013: 国境酆都(87,250); 233乐园: 国境(4,75)", conflict: "到达点两个说法"}]}
+  - {scene: 大唐国境, at: null, ref: "国境酆都(87,250)驿站老板", conf: B, dests: [{to: 长安城, opt: null, arrive: null, ref: "长安(280,43)"}]}
+  - {scene: 傲来国,   at: null, ref: "傲来(171,14)/(171,17)", conf: B, dests: [{to: 东海湾, opt: null, arrive: null, ref: "东海湾(85,23)"}]}
+  - {scene: 建邺城,   at: null, conf: C, dests: []}
+  - {scene: 朱紫国,   at: null, conf: C, dests: []}
+  - {scene: 宝象国,   at: null, conf: C, dests: []}
+  - {scene: 西梁女国, at: null, conf: C, dests: []}
+  - {scene: 长寿村,   at: null, conf: C, dests: []}
+  - {scene: 大唐境外, at: null, ref: "境外(12,28)驿站(去碗子山)", conf: C, dests: [{to: 碗子山, opt: null, arrive: null}]}
+
+# ───────────── 技能/道具类瞬移(不是场景间固定连接) ─────────────
+skills:
+  - {name: 吃茶去了, owner: 弥勒山弟子, to: 弥勒山, note: "平常状态可瞬间回门派", conf: A}
+  # 其他门派是否有"回门派"技能/道具: 待核
